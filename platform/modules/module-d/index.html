@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>智慧表單介面</title>
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic&amp;display=swap" rel="stylesheet">
+  <style>
+    /* 外部容器 */
+    .content-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    /* 按鈕區容器：使用淡莫蘭迪藍背景 */
+    .button-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      background: #d8e2dc;
+      padding: 25px;
+      border-radius: 10px;
+      max-width: 450px;
+    }
+
+    /* 基本按鈕樣式：莫蘭迪藍漸層 */
+    .btn {
+      display: block;
+      padding: 18px 25px;
+      font-size: 20px;
+      color: white;
+      background: linear-gradient(145deg, #a2b9bc, #6b8e93);
+      text-decoration: none;
+      border-radius: 10px;
+      text-align: center;
+      font-weight: bold;
+      font-family: 'Zen Maru Gothic', sans-serif;
+      transition: all 0.2s ease;
+      box-shadow: 6px 6px 12px #b1c1bf, -6px -6px 12px #ffffff;
+      border: none;
+      outline: none;
+    }
+
+    /* hover 效果：切換為莫蘭迪綠漸層 */
+    .btn:hover {
+      background: linear-gradient(145deg, #87a96b, #6b8e6b);
+      transform: scale(1.05);
+      box-shadow: 4px 4px 10px #7a9779, -4px -4px 10px #ffffff;
+      color: #fff;
+    }
+
+    /* active 點擊效果：深莫蘭迪綠壓下感 */
+    .btn:active {
+      background: #4a634a;
+      box-shadow: inset 5px 5px 10px #364936, inset -5px -5px 10px #5e7d5e;
+      transform: scale(0.95);
+    }
+
+    .ad-text {
+      font-size: 18px;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    /* 手機版適配 */
+    @media (max-width: 768px) {
+      .content-container {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .button-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        width: 100%;
+        padding: 15px;
+        box-sizing: border-box;
+        max-width: 95%;
+      }
+
+      .btn {
+        font-size: 1rem;
+        padding: 12px;
+        white-space: normal;
+        line-height: 1.2;
+        word-break: break-word;
+        text-align: center;
+      }
+    }
+
+    .smart-form-wrapper .btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 5px 5px 10px #adb8b6, -5px -5px 10px #ffffff;
+    }
+
+    .smart-form-wrapper .iframe-box {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      width: 90%;
+      max-width: 800px;
+      height: 80%;
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      z-index: 999;
+      transition: transform 0.4s ease;
+      box-shadow: 0 0 30px rgba(107, 142, 147, 0.3);
+    }
+
+    .smart-form-wrapper .iframe-box.active {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .smart-form-wrapper .iframe-box iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* 關閉按鈕：配合莫蘭迪深藍綠配色 */
+    .smart-form-wrapper .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      background: #5b7578;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      z-index: 1000;
+      transition: background 0.2s ease;
+    }
+
+    .smart-form-wrapper .close-btn:hover {
+      background: #4a634a;
+    }
+</style>
+</head>
+<body>
+
+<div class="smart-form-wrapper">
+  <div class="content-container">
+    <div class="button-container"> 
+      <a class="btn" href="javascript:void(0)" onclick="openForm('ER')">急診🚑</a>
+      <a class="btn" href="javascript:void(0)" onclick="openForm('Ward')">病房🛌</a>
+      <a class="btn" href="javascript:void(0)" onclick="openForm('Child')">兒童👶</a>
+      <a class="btn" href="javascript:void(0)" onclick="openForm('Outpatient')">門診🩺</a>
+      <a class="btn" href="javascript:void(0)" onclick="openForm('POX')">POX🦾</a>
+      <a class="btn" href="javascript:void(0)" onclick="openForm('Chinese')">中華院</a>
+      <a class="btn" href="javascript:void(0)" onclick="openForm('MABD')" style="white-space: nowrap;">體MA&nbsp;BD</a> 
+      <a class="btn" href="javascript:void(0)" onclick="openForm('MAMMO')" style="white-space: nowrap;">MAMMO</a>
+      <a class="btn" href="https://docs.google.com/spreadsheets/d/1U4x2VmIIYGCZMNfYtSxjZZjCJ7rTFuyyY7DT36tQpcM/edit?gid=937189985#gid=937189985" style="white-space: nowrap;">總紀錄表</a>
+    </div>
+
+    <div class="iframe-box" id="formBox">
+      <button class="close-btn" onclick="closeForm()">關閉</button>
+      <iframe id="formIframe" src=""></iframe>
+    </div>
+  </div>
+</div>
+
+<script>
+  function getToday() {
+    const now = new Date();
+    const localTime = new Date(now.getTime() - 6 * 60 * 60 * 1000);
+    const yyyy = localTime.getFullYear();
+    const mm = String(localTime.getMonth() + 1).padStart(2, '0');
+    const dd = String(localTime.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  }
+
+  const formLinks = {
+    ER: ["https://docs.google.com/forms/d/e/1FAIpQLSfdPqS10guWAiPkc1Lm2PEXn5RBz6wqTBMCAngGrJxPA6l9_g/viewform?usp=pp_url&entry.2006906930=%E7%9A%86%E6%AD%A3%E5%B8%B8&entry.792948513=%E7%9A%86%E6%AD%A3%E5%B8%B8&entry.1081509669=%E7%9A%86%E6%AD%A3%E5%B8%B8&", "entry.655526452"],
+    Ward: ["https://docs.google.com/forms/d/e/1FAIpQLSfHkAs2V_N7JrxF18bFbHsi5v6n9jDGKqABl-ol4d7r6TesYQ/viewform?usp=pp_url&entry.562538640=%E7%9A%86%E6%AD%A3%E5%B8%B8&entry.1010305451=%E7%9A%86%E6%AD%A3%E5%B8%B8&entry.1970476493=%E7%9A%86%E6%AD%A3%E5%B8%B8&", "entry.2049918903"],
+    Child: ["https://docs.google.com/forms/d/e/1FAIpQLScDZjFmsOik4O1e2NIjn8yfZlKSKGuPqdFyiqkkj2ua5diC_g/viewform?usp=pp_url&entry.1559440782=%E7%9A%86%E6%AD%A3%E5%B8%B8&entry.960317380=%E7%9A%86%E6%AD%A3%E5%B8%B8&entry.1302332122=%E7%9A%86%E6%AD%A3%E5%B8%B8&", "entry.2137906365"],
+    Outpatient: ["https://docs.google.com/forms/d/e/1FAIpQLSdq6EdkEJLzwuEN8hJB5VsJpNpnU_XRHZkAa0HIwcu1PNljKQ/viewform?usp=pp_url&entry.1513020373=%E7%9A%86%E6%AD%A3%E5%B8%B8&entry.2061545033=%E7%9A%86%E6%AD%A3%E5%B8%B8&entry.1190804749=%E7%9A%86%E6%AD%A3%E5%B8%B8&", "entry.340809545"],
+    POX: ["https://docs.google.com/forms/d/e/1FAIpQLSc3TKYbxcyWIttNG2EG3Sf_DUMZLhIPJBMaGaDHtEZgRqdqyQ/viewform?usp=pp_url&entry.1540019096=%E7%9A%86%E6%AD%A3%E5%B8%B8&entry.644054610=%E7%9A%86%E6%AD%A3%E5%B8%B8&entry.1074426121=%E7%9A%86%E6%AD%A3%E5%B8%B8&", "entry.1298867238"],
+    Chinese: ["https://docs.google.com/forms/d/e/1FAIpQLScjnb7c8GG1us5yCNmNllmcWoV4X_C9DayZZt7C0w5l9ABpBw/viewform?usp=pp_url&entry.544700355=%E7%9A%86%E6%AD%A3%E5%B8%B8&entry.660747649=%E7%9A%86%E6%AD%A3%E5%B8%B8&entry.469186188=%E7%9A%86%E6%AD%A3%E5%B8%B8&", "entry.1902608889"],
+    MABD: ["https://docs.google.com/forms/d/e/1FAIpQLSfTUrLSq4RL6c3xBx0HWrPjk0wYwKto-V3jqMEMRaMHjFChUw/viewform?usp=pp_url", "entry.1144276541"],
+    MAMMO: ["https://docs.google.com/forms/d/e/1FAIpQLSeF7gbRnHbiqi14iWgOtwsO9eMxvbDvW1lhIQmPW8rzrO2TrQ/viewform?usp=pp_url&entry.1351534938=%E7%9A%86%E6%AD%A3%E5%B8%B8", "entry.978645884"],
+  };
+
+  function openForm(key) {
+    const [url, dateField] = formLinks[key];
+    const fullUrl = `${url}?usp=pp_url&${dateField}=${getToday()}`;
+    document.getElementById("formIframe").src = fullUrl;
+    document.getElementById("formBox").classList.add("active");
+  }
+
+  function closeForm() {
+    document.getElementById("formBox").classList.remove("active");
+    document.getElementById("formIframe").src = "";
+  }
+</script>
+
+</body>
+</html>

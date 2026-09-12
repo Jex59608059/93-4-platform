@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>互動式藍色月曆</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="calendar-container">
+        <div class="calendar-header">
+            <button id="prevMonth" class="nav-button">← 上個月</button>
+            <div class="current-month-year" id="currentMonthYear"></div>
+            <select id="colleagueSelect" class="colleague-select">
+                <option value="">所有同事</option>
+            </select>
+            <button id="nextMonth" class="nav-button">下個月 →</button>
+        </div>
+
+        <div class="calendar-grid">
+            <div class="day-of-week">SUN</div>
+            <div class="day-of-week">MOM</div>
+            <div class="day-of-week">TUE</div>
+            <div class="day-of-week">WED</div>
+            <div class="day-of-week">THU</div>
+            <div class="day-of-week">FRI</div>
+            <div class="day-of-week">SAT</div>
+        </div>
+    </div>
+
+    <!-- 連結 JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>

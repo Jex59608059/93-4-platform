@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>9¾月台 - 霍格華茲魔法學院</title>
+
+  <!-- 引入 Google Fonts: Cinzel + Noto Serif TC + Zen Maru Gothic -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Noto+Serif+TC:wght@400;600;700&family=Zen+Maru+Gothic&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      /* 魔法學院主題配色 */
+      --magic-gold: #d4af37;
+      --magic-gold-light: #f3e5ab;
+      --gryffindor-red: #740001;
+      --gryffindor-red-hover: #4c0001;
+      --ravenclaw-blue: #0e1a40;
+      --parchment-bg: #f4ebd0;
+      --parchment-card: #fcf8ed;
+      --dark-wood: #1a0f07;
+      --text-dark: #2b1e16;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Noto Serif TC", "Cinzel", serif;
+      background: #110905 url('https://www.transparenttextures.com/patterns/wood-pattern.png');
+      color: var(--text-dark);
+      min-height: 100vh;
+      background-attachment: fixed;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1400px;
+      margin: auto;
+      padding: 40px 20px;
+      box-sizing: border-box;
+    }
+
+    /* 標題學院風裝飾 */
+    .header-box {
+      background: var(--parchment-card) url('https://www.transparenttextures.com/patterns/p5.png');
+      border: 3px double var(--magic-gold);
+      border-radius: 12px;
+      padding: 25px 20px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(212, 175, 55, 0.2);
+    }
+
+    h2 {
+      font-family: "Cinzel", "Noto Serif TC", serif;
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+      color: var(--gryffindor-red);
+      text-align: center;
+      line-height: 1.5;
+      text-shadow: 1px 1px 2px rgba(212, 175, 55, 0.3);
+    }
+
+    h3 {
+      text-align: center;
+      color: var(--gryffindor-red);
+      margin-top: 10px;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    /* --------- 密碼視窗 (魔法門禁) --------- */
+    #passwordModal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(10, 5, 2, 0.85);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(8px);
+      z-index: 9999;
+      opacity: 1;
+      transition: opacity 0.4s ease;
+    }
+    
+    #passwordModal.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .modal-box {
+      background: var(--parchment-bg) url('https://www.transparenttextures.com/patterns/p5.png');
+      padding: 45px 35px;
+      border-radius: 16px;
+      border: 3px double var(--magic-gold);
+      box-shadow: 0 0 30px rgba(212, 175, 55, 0.3), inset 0 0 20px rgba(116, 0, 1, 0.15);
+      text-align: center;
+      width: 100%;
+      max-width: 380px;
+      position: relative;
+    }
+
+    .modal-box h3 {
+      color: var(--gryffindor-red);
+      margin-bottom: 25px;
+      font-size: 1.5rem;
+      font-family: "Cinzel", "Noto Serif TC", serif;
+    }
+
+    input[type="password"] {
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 2px solid var(--magic-gold);
+      background: rgba(255, 255, 255, 0.8);
+      margin-bottom: 20px;
+      box-sizing: border-box;
+      outline: none;
+      color: var(--text-dark);
+      font-family: inherit;
+      transition: all 0.3s ease;
+    }
+
+    input[type="password"]:focus {
+      border-color: var(--gryffindor-red);
+      box-shadow: 0 0 12px rgba(116, 0, 1, 0.4);
+      background: #fff;
+    }
+
+    button.login-btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, var(--gryffindor-red) 0%, #4c0001 100%);
+      border: 1px solid var(--magic-gold);
+      color: var(--magic-gold-light);
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    }
+
+    button.login-btn:hover {
+      background: linear-gradient(135deg, #8c0001 0%, var(--gryffindor-red) 100%);
+      color: #fff;
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+    }
+    
+    button.login-btn:active {
+      transform: scale(0.97);
+    }
+
+    .error-msg {
+      color: #b30000;
+      margin-top: 15px;
+      font-size: 0.95rem;
+      font-weight: bold;
+      display: none;
+      animation: shake 0.3s;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-6px); }
+      75% { transform: translateX(6px); }
+    }
+
+    /* --------- 內容容器 --------- */
+    #content {
+      display: none;
+      animation: magicAppear 0.8s ease forwards;
+    }
+
+    @keyframes magicAppear {
+      from { opacity: 0; transform: translateY(30px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* 使用 Grid 設定左右 1:1 佈局 */
+    .calendar-container {
+      margin-top: 30px;
+      display: grid;
+      grid-template-columns: 1fr 1fr; /* 左右均分 */
+      gap: 30px;
+      align-items: start;
+    }
+
+    /* --------- 左側分頁標籤容器 --------- */
+    .tab-wrapper {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .tab-header {
+      display: flex;
+      gap: 10px;
+      margin-bottom: -2px;
+      z-index: 2;
+    }
+
+    .tab-btn {
+      padding: 12px 24px;
+      border: 2px solid var(--magic-gold);
+      border-bottom: none;
+      background: #2b1810;
+      color: var(--magic-gold-light);
+      font-size: 1rem;
+      font-weight: bold;
+      font-family: inherit;
+      border-radius: 12px 12px 0 0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: inset 0 -5px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-btn:hover {
+      background: var(--gryffindor-red);
+      color: #fff;
+    }
+
+    .tab-btn.active {
+      background: var(--parchment-card) url('https://www.transparenttextures.com/patterns/p5.png');
+      color: var(--gryffindor-red);
+      border-color: var(--magic-gold);
+      box-shadow: 0 -4px 12px rgba(212, 175, 55, 0.3);
+    }
+
+    iframe {
+      width: 100%;
+      border: 3px double var(--magic-gold);
+      border-radius: 0 16px 16px 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+      background: white;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    iframe:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 15px 30px rgba(212, 175, 55, 0.25);
+    }
+
+    .frame-left {
+      height: 900px; 
+    }
+
+    /* --------- 右側智慧表單區域（區域內嵌視窗） --------- */
+    .smart-form-wrapper {
+      position: relative; /* 供內部彈窗定位 */
+      background: var(--parchment-card) url('https://www.transparenttextures.com/patterns/p5.png');
+      border: 3px double var(--magic-gold);
+      border-radius: 16px;
+      padding: 25px 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+      margin-top: 48px;
+      min-height: 850px; /* 給予足夠高度收納開啟後的表單 */
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    .form-header-title {
+      text-align: center;
+      color: var(--gryffindor-red);
+      font-size: 1.3rem;
+      margin-top: 0;
+      margin-bottom: 20px;
+      font-family: "Cinzel", "Noto Serif TC", serif;
+      font-weight: bold;
+    }
+
+    .button-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .smart-btn {
+      display: block;
+      padding: 16px 10px;
+      font-size: 18px;
+      color: var(--magic-gold-light);
+      background: linear-gradient(135deg, var(--gryffindor-red) 0%, #4c0001 100%);
+      text-decoration: none;
+      border-radius: 10px;
+      text-align: center;
+      font-weight: bold;
+      font-family: 'Zen Maru Gothic', "Noto Serif TC", sans-serif;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--magic-gold);
+      outline: none;
+      box-sizing: border-box;
+    }
+
+    .smart-btn:hover {
+      background: linear-gradient(135deg, #8c0001 0%, var(--gryffindor-red) 100%);
+      color: #ffffff;
+      transform: translateY(-3px);
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+    }
+
+    .smart-btn:active {
+      transform: scale(0.96);
+      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5);
+    }
+
+    /* 改為限制在右側區域內的絕對定位視窗 */
+    .iframe-box {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--parchment-card) url('https://www.transparenttextures.com/patterns/p5.png');
+      border-radius: 16px;
+      overflow: hidden;
+      z-index: 10;
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.95);
+      transition: all 0.3s ease;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+      box-sizing: border-box;
+    }
+
+    .iframe-box.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1);
+    }
+
+    .iframe-box iframe {
+      width: 100%;
+      height: calc(100% - 50px);
+      border: none;
+      border-radius: 0 0 13px 13px;
+      margin-top: 50px;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      background: var(--gryffindor-red);
+      color: var(--magic-gold-light);
+      border: 1px solid var(--magic-gold);
+      padding: 6px 16px;
+      font-size: 0.95rem;
+      border-radius: 8px;
+      cursor: pointer;
+      z-index: 20;
+      font-family: inherit;
+      font-weight: bold;
+      transition: all 0.2s ease;
+    }
+
+    .close-btn:hover {
+      background: #8c0001;
+      color: #fff;
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+    }
+
+    /* 手機與窄螢幕適應 */
+    @media (max-width: 900px) {
+      .container { padding: 20px 12px; }
+      h2 { font-size: 1.3rem; }
+      .calendar-container { grid-template-columns: 1fr; }
+      .frame-left { height: 600px; }
+      .smart-form-wrapper { margin-top: 20px; min-height: 600px; }
+      .button-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+      .smart-btn {
+        font-size: 0.95rem;
+        padding: 12px 6px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- 密碼視窗 (霍格華茲門禁) -->
+  <div id="passwordModal">
+    <div class="modal-box">
+      <h3>📜 9¾月台入口門禁 📜</h3>
+      <input id="pwInput" type="password" placeholder="請輸入通關密語..." autocomplete="current-password" />
+      <button id="loginBtn" class="login-btn">🛒 進入月台</button>
+      <p id="errorMsg" class="error-msg">
+        ⚠️ 你是麻瓜，再見！
+      </p>
+    </div>
+  </div>
+
+  <!-- 內容區塊 -->
+  <div id="content">
+    <div class="container">
+
+      <div class="header-box">
+        <h2>🏰 歡迎來到霍格華茲</h2>
+        <h2>
+          此頁面僅供人員查看未填寫項目<br>
+          <span style="color:#e74c3c;">並非</span> 作為扣薪依據 
+        </h2>
+        <h3>✒️ 請勿洩漏密碼，感謝合作！</h3>
+      </div>
+
+      <div class="calendar-container">
+  <!-- 左邊頁籤切換區塊 -->
+  <div class="tab-wrapper">
+    <div class="tab-header">
+      <button class="tab-btn active" onclick="switchLeftTab('modules/module-a/index.html', this)">📜 卷軸 I</button>
+      <button class="tab-btn" onclick="switchLeftTab('modules/module-b/index.html', this)">📜 卷軸 II</button>
+    </div>
+    <!-- 左邊 iframe：預設載入 modules/module-a/index.html -->
+    <iframe id="leftTabFrame" class="frame-left" loading="lazy" src="modules/module-a/index.html"></iframe>
+  </div>
+        
+        <!-- 右邊區域：智慧表單快捷介面（表單開啟時會直接覆蓋在此框內） -->
+        <div class="smart-form-wrapper">
+          <h3 class="form-header-title">🪄儲思盆・記憶補登記區</h3>
+          <div class="button-container"> 
+            <a class="smart-btn" href="javascript:void(0)" onclick="openForm('ER')">急診</a>
+            <a class="smart-btn" href="javascript:void(0)" onclick="openForm('Ward')">病房</a>
+            <a class="smart-btn" href="javascript:void(0)" onclick="openForm('Child')">兒童</a>
+            <a class="smart-btn" href="javascript:void(0)" onclick="openForm('Outpatient')">門診</a>
+            <a class="smart-btn" href="javascript:void(0)" onclick="openForm('POX')">POX</a>
+            <a class="smart-btn" href="javascript:void(0)" onclick="openForm('Chinese')">中華院</a>
+            <a class="smart-btn" href="javascript:void(0)" onclick="openForm('MABD')">體MA BD</a> 
+            <a class="smart-btn" href="javascript:void(0)" onclick="openForm('MAMMO')">MAMMO</a> 
+            <a class="smart-btn" href="javascript:void(0)" onclick="openForm('CS')">CS</a> 
+            <a class="smart-btn" href="javascript:void(0)" onclick="openForm('ANGIO')">ANGIO</a> 
+            <a class="smart-btn" href="javascript:void(0)" onclick="openForm('BMD')">BMD</a> 
+            <a class="smart-btn" href="javascript:void(0)" onclick="openForm('PX/PX6')">PX/PX6</a>
+          </div>
+
+          <!-- 區域內嵌式 iframe Box -->
+          <div class="iframe-box" id="formBox">
+            <button class="close-btn" onclick="closeForm()">✖ 關閉視窗</button>
+            <iframe id="formIframe" src=""></iframe>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+<script>
+  const CORRECT_PASSWORD = "44000"; 
+  
+  const modal = document.getElementById("passwordModal");
+  const content = document.getElementById("content");
+  const pwInput = document.getElementById("pwInput");
+  const errorMsg = document.getElementById("errorMsg");
+  const loginBtn = document.getElementById("loginBtn");
+
+  function init() {
+    if (sessionStorage.getItem("isLoggedIn") === "true") {
+      showContent();
+    } else {
+      pwInput.focus();
+    }
+  }
+
+  function showContent() {
+    modal.classList.add("hidden");
+    setTimeout(() => {
+      modal.style.display = "none";
+    }, 400);
+    content.style.display = "block";
+  }
+
+  function checkPw() {
+    const userInput = pwInput.value;
+    if (userInput === CORRECT_PASSWORD) {
+      sessionStorage.setItem("isLoggedIn", "true");
+      errorMsg.style.display = "none";
+      showContent();
+    } else {
+      errorMsg.style.display = "block";
+      pwInput.value = "";
+      pwInput.focus();
+    }
+  }
+
+  /* --------- 左側頁籤切換邏輯 --------- */
+  function switchLeftTab(pageUrl, btnElement) {
+    document.getElementById("leftTabFrame").src = pageUrl;
+
+    const tabButtons = document.querySelectorAll(".tab-header .tab-btn");
+    tabButtons.forEach(btn => btn.classList.remove("active"));
+    btnElement.classList.add("active");
+  }
+
+  /* --------- 取得台灣時間當天日期 (YYYY-MM-DD) --------- */
+  function getToday() {
+    const now = new Date();
+    // 使用 Asia/Taipei 時區格式化日期
+    const formatter = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Asia/Taipei' });
+    return formatter.format(now); // 輸出格式為 YYYY-MM-DD
+  }
+
+  /* --------- 表單連結與日期欄位設定 --------- */
+  const formLinks = {
+    ER: ["https://docs.google.com/forms/d/e/1FAIpQLSfdPqS10guWAiPkc1Lm2PEXn5RBz6wqTBMCAngGrJxPA6l9_g/viewform?usp=pp_url&entry.2006906930=%E7%9A%86%E6%AD%A3%E5%B8%B8&entry.792948513=%E7%9A%86%E6%AD%A3%E5%B8%B8&entry.1081509669=%E7%9A%86%E6%AD%A3%E5%B8%B8", "entry.655526452"],
+    Ward: ["https://docs.google.com/forms/d/e/1FAIpQLSfHkAs2V_N7JrxF18bFbHsi5v6n9jDGKqABl-ol4d7r6TesYQ/viewform?usp=pp_url&entry.562538640=%E7%9A%86%E6%AD%A3%E5%B8%B8&entry.1010305451=%E7%9A%86%E6%AD%A3%E5%B8%B8&entry.1970476493=%E7%9A%86%E6%AD%A3%E5%B8%B8", "entry.2049918903"],
+    Child: ["https://docs.google.com/forms/d/e/1FAIpQLScDZjFmsOik4O1e2NIjn8yfZlKSKGuPqdFyiqkkj2ua5diC_g/viewform?usp=pp_url&entry.1559440782=%E7%9A%86%E6%AD%A3%E5%B8%B8&entry.960317380=%E7%9A%86%E6%AD%A3%E5%B8%B8&entry.1302332122=%E7%9A%86%E6%AD%A3%E5%B8%B8", "entry.2137906365"],
+    Outpatient: ["https://docs.google.com/forms/d/e/1FAIpQLSdq6EdkEJLzwuEN8hJB5VsJpNpnU_XRHZkAa0HIwcu1PNljKQ/viewform?usp=pp_url&entry.1513020373=%E7%9A%86%E6%AD%A3%E5%B8%B8&entry.2061545033=%E7%9A%86%E6%AD%A3%E5%B8%B8&entry.1190804749=%E7%9A%86%E6%AD%A3%E5%B8%B8", "entry.340809545"],
+    POX: ["https://docs.google.com/forms/d/e/1FAIpQLSc3TKYbxcyWIttNG2EG3Sf_DUMZLhIPJBMaGaDHtEZgRqdqyQ/viewform?usp=pp_url&entry.1540019096=%E7%9A%86%E6%AD%A3%E5%B8%B8&entry.644054610=%E7%9A%86%E6%AD%A3%E5%B8%B8&entry.1074426121=%E7%9A%86%E6%AD%A3%E5%B8%B8", "entry.1298867238"],
+    Chinese: ["https://docs.google.com/forms/d/e/1FAIpQLScjnb7c8GG1us5yCNmNllmcWoV4X_C9DayZZt7C0w5l9ABpBw/viewform?usp=pp_url&entry.544700355=%E7%9A%86%E6%AD%A3%E5%B8%B8&entry.660747649=%E7%9A%86%E6%AD%A3%E5%B8%B8&entry.469186188=%E7%9A%86%E6%AD%A3%E5%B8%B8", "entry.1902608889"],
+    MABD: ["https://docs.google.com/forms/d/e/1FAIpQLSfTUrLSq4RL6c3xBx0HWrPjk0wYwKto-V3jqMEMRaMHjFChUw/viewform?usp=pp_url", "entry.1144276541"],
+    MAMMO: ["https://docs.google.com/forms/d/e/1FAIpQLSeF7gbRnHbiqi14iWgOtwsO9eMxvbDvW1lhIQmPW8rzrO2TrQ/viewform?usp=pp_url&entry.1351534938=%E7%9A%86%E6%AD%A3%E5%B8%B8", "entry.978645884"],
+    CS: ["https://docs.google.com/forms/d/e/1FAIpQLSeDeXRmXQF4MRG7oxQV3lOVhhGMp3w7b4TCct8NnshMdG1Q8A/viewform?usp=dialog"],
+    ANGIO: ["https://docs.google.com/forms/d/e/1FAIpQLSfeQ18HcyJyaPeFWUd2ALkBNLwD3vUZ7qMS6WNZURyj012T9Q/viewform?usp=dialog"],
+    BMD: ["https://docs.google.com/forms/d/e/1FAIpQLScBAunHQIaw7bulO1JDJ3P6FC8MKiHZ3ZS41ojxQpDNTN3t5g/viewform?usp=dialog"],
+    "PX/PX6": ["https://docs.google.com/forms/d/e/1FAIpQLSfyhvrknBB2Ap6PsORJagZ8RtWFl3HXsLQNjqSd5Mmwo7d-rA/viewform?usp=dialog"],
+  };
+
+  /* --------- 右側智慧表單開啟/關閉邏輯 --------- */
+  function openForm(key) {
+    const item = formLinks[key];
+    if (!item) return;
+
+    const [baseUrl, dateField] = item;
+    let fullUrl = baseUrl;
+
+    // 若有指定的日期欄位，才拼接日期參數
+    if (dateField) {
+      const connector = baseUrl.includes('?') ? '&' : '?';
+      fullUrl = `${baseUrl}${connector}${dateField}=${getToday()}`;
+    }
+
+    document.getElementById("formIframe").src = fullUrl;
+    document.getElementById("formBox").classList.add("active");
+  }
+
+  function closeForm() {
+    document.getElementById("formBox").classList.remove("active");
+    document.getElementById("formIframe").src = "";
+  }
+
+  loginBtn.addEventListener("click", checkPw);
+
+  pwInput.addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+      checkPw();
+    }
+  });
+
+  init();
+</script>
+
+</body>
+</html>
