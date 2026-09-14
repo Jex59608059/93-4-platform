@@ -1,0 +1,216 @@
+/* 引入古典魔法風格英文字體（Cinzel）與中文流暢字體 */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&display=swap');
+
+body {
+    font-family: 'Cinzel', 'Times New Roman', 'Noto Serif TC', serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    /* 背景：魔法地牢/古典城堡暗沉背景，疊加羊皮紙紋理感 */
+    background: radial-gradient(circle, #2b1f1d 0%, #120d0d 100%);
+    margin: 0;
+    color: #2c1d11; /* 深褐色文字，如羽毛筆墨水 */
+}
+
+/* 魔法書 / 古老羊皮紙卷軸容器 */
+.calendar-container {
+    width: 90%;
+    max-width: 900px;
+    background: #f4e8c1 url('https://www.transparenttextures.com/patterns/aged-paper.png'); /* 羊皮紙質感 */
+    border-radius: 8px;
+    /* 雙層古典金屬與陰影質感 */
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(88, 57, 28, 0.4);
+    border: 3px solid #8c6d3f; /* 古銅金邊框 */
+    overflow: hidden;
+    position: relative;
+}
+
+/* 頂部標題區：深紅/暗金古典魔法風格 Header */
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(180deg, #3a0d0d 0%, #220505 100%); /* 葛來分多/霍格華茲深紅 */
+    color: #f1d38e; /* 魔法黃金字體 */
+    padding: 18px 24px;
+    border-bottom: 2px solid #c5a059; /* 亮金分隔線 */
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* 魔法按鈕（像古老符文石或魔法印章） */
+.nav-button {
+    background: linear-gradient(180deg, #5a4225 0%, #3a2813 100%);
+    color: #f1d38e;
+    border: 1px solid #c5a059;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 15px;
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+}
+
+.nav-button:hover {
+    background: linear-gradient(180deg, #8c6d3f 0%, #5a4225 100%);
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(197, 160, 89, 0.6);
+}
+
+/* 年月標題：如魔法書章節 */
+.current-month-year {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #f1d38e;
+}
+
+/* 下拉選單：如魔法羊皮紙選單 */
+.colleague-select {
+    background-color: #2b1f1d;
+    color: #f1d38e;
+    border: 1px solid #c5a059;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: 'Cinzel', serif;
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    /* 下拉箭頭改為金色 SVG */
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23f1d38e%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-6.5%200-12.3%203-16.1%208.7-3.9%205.8-3.7%2013.1.4%2018.6l128.8%20153.6a17.6%2017.6%200%200%200%2027.8%200l128.8-153.6c4.1-5.5%204.2-12.8.4-18.6z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 10px;
+    padding-right: 30px;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.8);
+}
+
+.colleague-select option {
+    background-color: #2b1f1d;
+    color: #f1d38e;
+}
+
+/* 日曆網格底座 */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    padding: 12px;
+    background: transparent;
+}
+
+/* 星期標題：羊皮紙標記列 */
+.day-of-week {
+    text-align: center;
+    font-weight: 700;
+    padding: 10px 0;
+    color: #4a321a;
+    background: rgba(197, 160, 89, 0.25);
+    border-bottom: 2px solid #8c6d3f;
+    border-right: 1px solid rgba(140, 109, 63, 0.3);
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+.day-of-week:last-child {
+    border-right: none;
+}
+
+/* 日期方格：羊皮紙單元格 */
+.date-cell {
+    min-height: 100px;
+    padding: 8px;
+    border: 1px solid rgba(140, 109, 63, 0.25);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background-color: rgba(255, 255, 255, 0.15);
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.date-cell:hover {
+    background-color: rgba(197, 160, 89, 0.2);
+    box-shadow: inset 0 0 8px rgba(140, 109, 63, 0.4);
+}
+
+/* 日期數字：墨水印刷質感 */
+.date-number {
+    font-size: 18px;
+    font-weight: 700;
+    color: #3d2612;
+    margin-bottom: 5px;
+    font-family: 'Cinzel', serif;
+}
+
+/* 非本月日期：褪色墨水效果 */
+.other-month .date-number {
+    color: #b5a386;
+}
+
+.other-month {
+    background-color: rgba(0, 0, 0, 0.04);
+}
+
+/* 今日（Today）：魔法光輝 / 魔法印章效果 */
+.today {
+    background: radial-gradient(circle, #741b1b 0%, #4a0d0d 100%) !important;
+    color: #f1d38e;
+    border: 2px solid #c5a059 !important;
+    box-shadow: 0 0 15px rgba(197, 160, 89, 0.6), inset 0 0 10px rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+}
+
+.today .date-number {
+    color: #f1d38e;
+    text-shadow: 0 0 5px rgba(241, 211, 142, 0.5);
+}
+
+.today .data-entry {
+    color: #e2d2b4;
+}
+
+/* 資料條目：手寫記錄感 */
+.data-entry {
+    font-size: 12px;
+    color: #523b26;
+    line-height: 1.3;
+    font-weight: 600;
+}
+
+/* 網格邊框微調 */
+.calendar-grid > .day-of-week:first-child,
+.calendar-grid > .date-cell:nth-child(7n + 1) {
+    border-left: none;
+}
+
+.calendar-grid > .day-of-week:last-child,
+.calendar-grid > .date-cell:nth-child(7n) {
+    border-right: none;
+}
+
+.calendar-grid > .date-cell:nth-child(n+8):nth-child(-n+14),
+.calendar-grid > .date-cell:nth-child(n+15):nth-child(-n+21),
+.calendar-grid > .date-cell:nth-child(n+22):nth-child(-n+28),
+.calendar-grid > .date-cell:nth-child(n+29):nth-child(-n+35),
+.calendar-grid > .date-cell:nth-child(n+36):nth-child(-n+42) {
+    border-top: 1px solid rgba(140, 109, 63, 0.25);
+}
+
+.calendar-grid > .date-cell {
+    border-bottom: 1px solid rgba(140, 109, 63, 0.25);
+    border-right: 1px solid rgba(140, 109, 63, 0.25);
+}
+
+.calendar-grid > .date-cell:nth-child(7n) {
+    border-right: none;
+}
+
+.calendar-grid > .date-cell:nth-last-child(-n+7) {
+    border-bottom: none;
+}
